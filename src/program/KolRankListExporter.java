@@ -1,6 +1,7 @@
 package program;
 
-import defs.Defs;
+import definitions.Constants;
+
 import graph.ActionEdge;
 import graph.ActionGraph;
 import graph.Node;
@@ -100,14 +101,14 @@ public class KolRankListExporter {
             Node nd = it.getKey();
             int u = it.getValue();
             if(nd.getXpath().isEmpty()) {
-                biases[u] = kolList.contains(nd) ? Defs.kolBias : Defs.normieBias;
+                biases[u] = kolList.contains(nd) ? Constants.KOL_BIAS : Constants.NORMIE_BIAS;
             }
             else {
-                biases[u] = Defs.tweetBias;
+                biases[u] = Constants.TWEET_BIAS;
             }
         }
 
-        double[] points = WeightedPagerankRunner.pagerank(Defs.pagerankEpoches, n, adj, Defs.pagerankC, biases);
+        double[] points = WeightedPagerankRunner.pagerank(Constants.PAGERANK_EPOCHES, n, adj, Constants.PAGERANK_C, biases);
         ArrayList<KolRankListTableRow> table = new ArrayList<>();
         for(Node nd : kolList) {
             assert(id.containsKey(nd));
@@ -115,6 +116,6 @@ public class KolRankListExporter {
             table.add(new KolRankListTableRow(nd.getUser(), points[index]));
         }
         table.sort(KolRankListTableRow::compareTo);
-        printTable(Defs.outputFilePath, table);
+        printTable(Constants.KOL_RANK_LIST_OUTPUT_FILE_PATH, table);
     }
 }

@@ -1,7 +1,7 @@
 package graph;
 
 import std.Pair;
-import defs.Defs;
+import definitions.Constants;
 
 public abstract class ActionEdge extends Pair<Node, Node> {
     public ActionEdge(Node x, Node y) {
@@ -14,27 +14,27 @@ class FollowEdge extends ActionEdge {
     public FollowEdge(Node x, Node y) {
         super(x, y);
     }
-    public double getWeight() { return Defs.followEdgeWeight; }
+    public double getWeight() { return Constants.FOLLOW_EDGE_WEIGHT; }
     public String edgeType() { return "FollowEdge"; }
 }
 class CommentEdge extends ActionEdge {
     public CommentEdge(Node x, Node y) {
         super(x, y);
     }
-    public double getWeight() { return Defs.commentEdgeWeight; }
+    public double getWeight() { return Constants.COMMENT_EDGE_WEIGHT; }
     public String edgeType() { return "CommentEdge"; }
 }
 class TweetEdge extends ActionEdge {
     public TweetEdge(Node x, Node y) {
         super(x, y);
     }
-    public double getWeight() { return Defs.tweetEdgeWeight; }
+    public double getWeight() { return Constants.TWEET_EDGE_WEIGHT; }
     public String edgeType() { return "TweetEdge"; }
 }
 class RepostEdge extends ActionEdge {
     public RepostEdge(Node x, Node y) {
         super(x, y);
     }
-    public double getWeight() { return Defs.repostEdgeWeight; }
+    public double getWeight() { return Constants.REPOST_EDGE_WEIGHT; }
     public String edgeType() { return "RepostEdge"; }
 }

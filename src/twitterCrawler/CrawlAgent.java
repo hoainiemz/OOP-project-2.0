@@ -20,10 +20,10 @@ import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
 public class CrawlAgent {
-    private CrawlOptions options;
-    private WebDriver driver;
+    final private CrawlOptions options;
+    final private WebDriver driver;
     private Actions actions;
-    private WebDriverWait wait;
+    final private WebDriverWait wait;
 
     public CrawlAgent(CrawlOptions options) throws InterruptedException {
         this.options = options;
@@ -36,11 +36,6 @@ public class CrawlAgent {
         TimeUnit.SECONDS.sleep(5);
     }
 
-    /**
-     * navigate the browser to url
-     * @param url
-     * @throws InterruptedException
-     */
     public void visit(String url) throws InterruptedException {
         int i = 0;
         if (!url.startsWith("https://")) {
@@ -58,22 +53,11 @@ public class CrawlAgent {
         TimeUnit.SECONDS.sleep(1);
     }
 
-    /**
-     * @param selector
-     * @return the WebElement given the CSS slector
-     */
     private WebElement findElement(String selector) {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(selector)));
     }
 
-    /**
-     * crawl the tweet, add the crawled edges to graph
-     * @param tweet
-     * @param graph
-     * @throws InterruptedException
-     * @throws IOException
-     */
-    public void crawlTweet(Node tweet, GraphEditor graph) throws InterruptedException, IOException {
+    public void crawlTweet(Node tweet, ActionGraph graph) throws InterruptedException, IOException {
         visit(tweet.getUrl(options));
         while (true) {
             int cnt = 0;
@@ -93,7 +77,7 @@ public class CrawlAgent {
                     continue;
                 }
                 Node commenter = new Node(handle);
-                graph.addEdge(commenter, tweet);
+                graph.addCommentEdge(commenter, tweet);
                 cnt++;
                 if (cnt >= options.getMaxRepliesPerTweet()) {
                     break;
@@ -112,19 +96,13 @@ public class CrawlAgent {
         }
     }
 
-    /**
-     * crawl the user, save the crawled data to the json file corresponding to the user
-     * @param user
-     * @throws InterruptedException
-     * @throws IOException
-     */
     public boolean crawlUser(Node user) throws InterruptedException, IOException {
-        if (GraphEditor.isCrawled(user)) {
+        if (ActionGraph.isCrawled(user)) {
             return false;
         }
         visit(user.getUrl(options));
-        GraphEditor graph = new GraphEditor();
-        int followers = StringFunction.stoi(findElement(options.getFollowerSelector()).getAttribute("innerHTML"));
+        ActionGraph graph = new ActionGraph();
+        int followers = StringFunction.sToI(findElement(options.getFollowerSelector()).getAttribute("innerHTML"));
         if (followers < options.getKolMinFollower()) {
             return false;
         }
@@ -153,24 +131,17 @@ public class CrawlAgent {
         for (String url : tweets) {
             Node tweet = Node.constructFromTweetUrl(url);
             if (user.getUser().compareTo(tweet.getUser()) == 0) {
-                graph.addEdge(tweet, user);
+                graph.addTweetEdge(tweet, user);
                 crawlTweet(tweet, graph);
             }
             else {
-                graph.addEdge(user, tweet);
+                graph.addRepostEdge(user, tweet);
             }
         }
         graph.save(user);
         return true;
     }
 
-    /**
-     * crawl usernames from given keyword and push into list
-     * @param keyword
-     * @param list
-     * @throws InterruptedException
-     * @throws IOException
-     */
     public void crawlKeyword(String keyword, ArrayList<String> list) throws InterruptedException, IOException {
         String url = "https://nitter.poast.org/search?f=users&q=" + keyword;
         visit(url);
@@ -203,11 +174,6 @@ public class CrawlAgent {
         }
     }
 
-    /**
-     * crawl the keyword
-     * @throws IOException
-     * @throws InterruptedException
-     */
     public void search() throws IOException, InterruptedException {
         ArrayList<String> keyWords = JsonHandler.loadArrayFromJSON("searchingkeywords.json");
         ArrayList<String> handleList = new ArrayList<>();
@@ -217,11 +183,6 @@ public class CrawlAgent {
         JsonHandler.dumpToJSON(handleList, "usernames.json");
     }
 
-    /**
-     * crawl the user
-     * @throws IOException
-     * @throws InterruptedException
-     */
     public void crawl() throws IOException, InterruptedException {
         ArrayList<String> handles = JsonHandler.loadArrayFromJSON("usernames.json");
         TreeSet<String> skipped = new TreeSet<>(new StringComparator());
@@ -238,12 +199,6 @@ public class CrawlAgent {
         System.out.println("Done! :)");
     }
 
-    /**
-     * load twitter cookies into the browser
-     * @param file
-     * @throws InterruptedException
-     * @throws IOException
-     */
     public void loadCookies(String file) throws InterruptedException, IOException {
         ArrayList<LinkedHashMap<String, Object> > cookies = (ArrayList<LinkedHashMap<String, Object>>) ((LinkedHashMap<String, Object>) JsonHandler.loadObjectFromJSON(file)).get("cookies");
         for (LinkedHashMap<String, Object> cookie : cookies) {
@@ -300,27 +255,25 @@ public class CrawlAgent {
         return new ArrayList<>(response);
     }
 
-    /**
-     * for all crawled users, add all of their following edges to data
-     */
     public void updateFollowingEdges() throws IOException, InterruptedException {
         ArrayList<String> handles = JsonHandler.loadArrayFromJSON("usernames.json");
         loadCookies("cookies.json");
         TreeSet<String> skipped = new TreeSet<>(new StringComparator());
         skipped.addAll(JsonHandler.loadArrayFromJSON("skipped.json"));
         for (String handle : handles) {
-            if (!JsonHandler.exists("crawled/" + handle + ".json") || skipped.contains(handle)) {
+            String filepath = std.StringFunction.getJSONFilePath(handle);
+            if (!JsonHandler.exists(filepath) || skipped.contains(handle)) {
                 continue;
             }
-            GraphEditor graph = new GraphEditor();
-            graph.loadFromFile(handle + ".json");
+            ActionGraph graph = new ActionGraph();
+            graph.loadFromFile(filepath);
             ArrayList<String> followingList = crawlFollowingList(new Node(handle));
             for (String tmp : followingList) {
-                graph.addEdge(handle, tmp);
+                graph.addFollowEdge(new Node(handle), new Node(tmp));
             }
             ArrayList<String> followersList = crawlFollowersList(new Node(handle));
             for (String tmp : followersList) {
-                graph.addEdge(tmp, handle);
+                graph.addFollowEdge(new Node(tmp), new Node(handle));
             }
             skipped.add(handle);
             graph.save(new Node(handle));

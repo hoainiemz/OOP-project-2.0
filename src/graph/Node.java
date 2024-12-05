@@ -55,10 +55,6 @@ public class Node implements Comparable<Node> {
         return xpath.compareTo("") == 0;
     }
 
-    /**
-     * the url of the user/tweet
-     * @return
-     */
     public String getUrl(CrawlOptions crawlOptions) {
         if (isUser()) {
             return crawlOptions.getUrl() + user;
@@ -66,10 +62,6 @@ public class Node implements Comparable<Node> {
         return crawlOptions.getUrl() + user + "/status/" + xpath;
     }
 
-    /**
-     * @param url
-     * @return the adress of the new node constructed by url
-     */
     public static Node constructFromTweetUrl(String url) {
         String name = null, xpath = null;
         int u = url.lastIndexOf('/');
@@ -78,6 +70,10 @@ public class Node implements Comparable<Node> {
         int r = url.indexOf('/', l + 1);
         name = url.substring(l + 1, r);
         return new Node(name, xpath);
+    }
+
+    public String getJSONFilename() {
+        return "crawled/" + this.getUser() + ".json";
     }
 
     @Override

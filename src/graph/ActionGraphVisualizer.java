@@ -11,7 +11,6 @@ import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.*;
 import std.Pair;
 import std.StringFunction;
-import jsonhandler.JsonHandler;
 import std.StringComparator;
 
 import javax.imageio.ImageIO;
@@ -20,30 +19,16 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class GraphEditor {
-    private ArrayList<Pair<Node, Node>> edgesList;
-    public GraphEditor() {
-        edgesList = new ArrayList<>();
-    }
-
-    public void addEdge(Node u, Node v) {
-        edgesList.add(new Pair<Node, Node>(u, v));
-    }
-
-    public void addEdge(String u, String v) {
-        edgesList.add(new Pair<Node, Node>(new Node(u), new Node(v)));
+public class ActionGraphVisualizer extends ActionGraph {
+    public ActionGraphVisualizer() {
+        super();
     }
 
     private static void visualizeGraph(Graph<String, DefaultEdge> graph) throws IOException {
         JGraphXAdapter<String, DefaultEdge> graphAdapter =
-                new JGraphXAdapter<String, DefaultEdge>(graph);
+                new JGraphXAdapter<>(graph);
 //        graphAdapter.setLabelsVisible(false);
         graphAdapter.getEdgeToCellMap().forEach((edge, cell) -> cell.setValue(null));
         mxIGraphLayout layout = new mxCircleLayout(graphAdapter);
@@ -52,49 +37,6 @@ public class GraphEditor {
         BufferedImage image = mxCellRenderer.createBufferedImage(graphAdapter, null, 2, Color.WHITE, true, null);
         File imgFile = new File("graph.png");
         ImageIO.write(image, "PNG", imgFile);
-    }
-
-    static public String getJSONFilename(Node user) {
-        return "crawled/" + user.getUser() + ".json";
-    }
-
-    static public String getJSONFilename(String user) {
-        return "crawled/" + user + ".json";
-    }
-
-    public void save(Node user) throws IOException {
-        JsonHandler.dumpToJSON(edgesList, getJSONFilename(user));
-    }
-
-    public static boolean isCrawled(Node user) {
-        String nodeJSON = getJSONFilename(user);
-        return JsonHandler.exists(nodeJSON);
-    }
-
-    public void loadFromFile(String file) throws IOException {
-        ArrayList<LinkedHashMap<LinkedHashMap<String, String>, LinkedHashMap<String, String> >> edges = JsonHandler.loadArrayFromJSON("/crawled/" + file);
-        for (LinkedHashMap<LinkedHashMap<String, String>, LinkedHashMap<String, String> > tmp : edges) {
-            edgesList.add(new Pair<Node, Node>(new Node(tmp.get("key")), new Node(tmp.get("value"))));
-        }
-    }
-
-    public void load() throws IOException {
-        Stream<Path> stream = Files.list(Paths.get("data/crawled"));
-        Set<String> files = stream.filter(file -> !Files.isDirectory(file)).map(Path::getFileName).map(Path::toString).collect(Collectors.toSet());
-        edgesList = new ArrayList<>();
-        for (String file : files) {
-            loadFromFile(file);
-        }
-        System.out.println("Graph loaded! :))");
-    }
-
-    public Set<Node> getNodeList() {
-        TreeSet<Node> nodeList = new TreeSet<>();
-        for (Pair<Node, Node> edge : edgesList) {
-            nodeList.add(edge.getKey());
-            nodeList.add(edge.getValue());
-        }
-        return nodeList;
     }
 
     public void visualize() {
@@ -113,8 +55,8 @@ public class GraphEditor {
             else {
                 idx++;
 //                vertexStringMapper.put(node, graph.addVertex(Str.itos(idx))); ;
-                vertexStringMapper.put(node, StringFunction.itos(idx));
-                graph.addVertex(StringFunction.itos(idx));
+                vertexStringMapper.put(node, StringFunction.iToS(idx));
+                graph.addVertex(StringFunction.iToS(idx));
             }
         }
         for (Pair<Node, Node> edge : edgesList) {

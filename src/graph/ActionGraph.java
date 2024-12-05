@@ -1,6 +1,7 @@
 package graph;
 
 import jsonhandler.JsonHandler;
+import std.Pair;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,10 +24,26 @@ public class ActionGraph {
         return edgesList;
     }
 
-    public void loadFromFile(String file) throws IOException {
-        assert file.endsWith(".json");
-        String currentUser = file.substring(0, file.length() - 5);
-        ArrayList<LinkedHashMap<LinkedHashMap<String, String>, LinkedHashMap<String, String> >> edges = JsonHandler.loadArrayFromJSON("/crawled/" + file);
+    public void addCommentEdge(Node u, Node v) {
+        this.getEdgesList().add(new CommentEdge(u, v));
+    }
+    public void addRepostEdge(Node u, Node v) {
+        this.getEdgesList().add(new RepostEdge(u, v));
+    }
+    public void addFollowEdge(Node u, Node v) {
+        this.getEdgesList().add(new FollowEdge(u, v));
+    }
+    public void addTweetEdge(Node u, Node v) {
+        this.getEdgesList().add(new TweetEdge(u, v));
+    }
+
+    public void loadFromFile(String filepath) throws IOException {
+        Path path = Paths.get(filepath);
+        String filename = path.getFileName().toString();
+        assert filename.endsWith(".json");
+        String currentUser = filename.substring(0, filename.length() - 5);
+
+        ArrayList<LinkedHashMap<LinkedHashMap<String, String>, LinkedHashMap<String, String> >> edges = JsonHandler.loadArrayFromJSON(filepath);
         for (LinkedHashMap<LinkedHashMap<String, String>, LinkedHashMap<String, String> > tmp : edges) {
 //            edgesList.add(new Pair<Node, Node>(new Node(tmp.get("key")), new Node(tmp.get("value"))));
             Node u = new Node(tmp.get("key"));
@@ -61,11 +79,28 @@ public class ActionGraph {
 
     public void load() throws IOException {
         Stream<Path> stream = Files.list(Paths.get("data/crawled"));
-        Set<String> files = stream.filter(file -> !Files.isDirectory(file)).map(Path::getFileName).map(Path::toString).collect(Collectors.toSet());
-        edgesList = new ArrayList<>();
+        Set<String> files = stream.filter(file -> !Files.isDirectory(file)).map(Path::toString).collect(Collectors.toSet());
         for (String file : files) {
             loadFromFile(file);
         }
         System.out.println("Graph loaded! :))");
+    }
+
+    public void save(Node user) throws IOException {
+        JsonHandler.dumpToJSON(edgesList, user.getJSONFilename());
+    }
+
+    public Set<Node> getNodeList() {
+        TreeSet<Node> nodeList = new TreeSet<>();
+        for (Pair<Node, Node> edge : edgesList) {
+            nodeList.add(edge.getKey());
+            nodeList.add(edge.getValue());
+        }
+        return nodeList;
+    }
+
+    public static boolean isCrawled(Node user) {
+        String nodeJSON = user.getJSONFilename();
+        return JsonHandler.exists(nodeJSON);
     }
 }
