@@ -3,9 +3,10 @@ package grapheditor;
 import std.Str;
 import twitter.CrawlOptions;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 
-public class Node{
+public class Node implements Comparable<Node> {
     private String user;
     private  String xpath;
 
@@ -78,5 +79,12 @@ public class Node{
         int r = url.indexOf('/', l + 1);
         name = url.substring(l + 1, r);
         return new Node(name, xpath);
+    }
+
+    @Override
+    public int compareTo(Node rhs) {
+        int val = this.user.compareTo(rhs.user);
+        if(val != 0) return val;
+        return this.xpath.compareTo(rhs.xpath);
     }
 }
