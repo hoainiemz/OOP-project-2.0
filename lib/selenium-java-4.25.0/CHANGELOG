@@ -188,7 +188,7 @@ v4.17.0
 * Updating channel name from Aurora to Dev
 * Removing mentions to firefox-bin in docs and tests
 * Deprecate FirefoxBinary class
-* Deprecate json wire related ErrorCodes
+* Deprecate jsonhandler wire related ErrorCodes
 * Fix the ScreenshotException message
 * Add ShadowRoot.hashCode / .equals #13326
 * Deprecate unused RemoteStatus
@@ -258,7 +258,7 @@ v4.16.0
 * Add macOS 14.0 to Platform enum
 * Do not return linux Selenium Manager by default
 * [bidi] Add traverse history command
-* Make the json parsing exception text more helpful
+* Make the jsonhandler parsing exception text more helpful
 * Add javadoc to support event classes (#13199)
 * Packages should be opened to modules #13217
 * Add more tests for java support event class (#13198)
@@ -303,7 +303,7 @@ v4.15.0
 * Fixed the invalid session id response #12655
 * Add BiDi channel value type, remote value type and evaluate result types
 * Add BiDi call script command, evaluate function command, disown command, get realms command
-* Open the selenium-manager to the selenium-json package for the Java Module System
+* Open the selenium-manager to the selenium-jsonhandler package for the Java Module System
 * Add message to exception error for downloads error
 * Add BiDi command to add and remove preload script
 * Add CDP v119 and remove v116
@@ -850,7 +850,7 @@ v4.1.1
 * BugFix: Following redirects by default in HttpClient
 * BugFix: Forwarding CDP/BiDi connections to the container in Dynamic Grid
 * BugFix: Do not log screenshots payload in debug mode
-* BugFix: Mapping Slot fields properly for json payloads
+* BugFix: Mapping Slot fields properly for jsonhandler payloads
 * BugFix: Configuring relay service via CLI
 * BugFix: Adding a "bind-host" flag to start Grid properly when the
   server cannot bind to the host, fixes this for environments like Docker
@@ -1196,7 +1196,7 @@ v4.0.0.0-alpha-1
 * Added command to open a new window.
 * Element screenshotting now possible
 * Selenium Server now no longer includes HtmlUnit by default
-* New Grid can output logs in single-line json format to stdout
+* New Grid can output logs in single-line jsonhandler format to stdout
 * #6617 Implement equals() and hashCode() in `Select` element wrapper
 
 v3.141.59
@@ -1683,8 +1683,8 @@ Other major changes:
 
 * Remove OSS safaridriver in preference for Apple's own SafariDriver
   that ships as part of Safari 10.
-* [Grid] -nodeConfig (json) files have a new flatter format (#2789)
-* [Grid] Fix #2721, -nodeConfig (json) settings were not always
+* [Grid] -nodeConfig (jsonhandler) files have a new flatter format (#2789)
+* [Grid] Fix #2721, -nodeConfig (jsonhandler) settings were not always
   applied
 * [Grid] Cleanup the api for RegistrationRequest -- will break
   compilation for people moving from 2.x -- removed the ability to
@@ -2220,7 +2220,7 @@ v2.44.0
   * trim() HTTP response content because some drivers send back a response containing trailing null bytes, which the GSON parser does not like.
   * If JsonParser.parse() fails to parse a string obtained from a reflective call to a toJson() method, assume it is a primitive string.
         This is the case for, e.g., FirefoxProfile.toJson(), which returns a base64-encoded zip file. That string likely contains at least one '/', which the Gson parser rejects.
-  * Fixing SessionId from json converter to better handle the case of null sessionId
+  * Fixing SessionId from jsonhandler converter to better handle the case of null sessionId
   * Fix the Eclipse config. The new gson dependency wasn't added. Now is :) Also switched a call in HtmlUnitWebElement to use guava rather than commons-lang since that's already included in the build configs for both Buck and CrazyFun.
   * Get the Buck build working again.
   * HtmlUnit: add text to the end of input fields. This makes the htmlunit driver work as the other drivers do.
@@ -2229,7 +2229,7 @@ v2.44.0
   * Fix classpath for running tests in eclipse This allows the htmlunitdriver tests to run in Eclipse.
   * Fixing broken CrossDomainRpcLoader
   * Implementing autoconverion of platform in Capabilities on write
-  * Moving from org.json to gson because the license. Fixes issue 7956
+  * Moving from org.jsonhandler to gson because the license. Fixes issue 7956
   * Revert "Bump the version of webbit to 0.4.15"
   * Optimizing finding multiple elements by id by using CSS selectors if available. Fixes issue 7682
   * Fixing WDBS compatibility with IE5. Fixes issue 7938
@@ -2303,7 +2303,7 @@ WebDriver:
      builder will attempt to create a client locally, throwing an error if it can't (e.g. for IE).
     * Add browser specific constructors to simplify creating a client without the Builder.
     Fixes issue 7593
-  * Updating json-cpp lib and replacing mongoose web server with civetweb.
+  * Updating jsonhandler-cpp lib and replacing mongoose web server with civetweb.
   * Safari is flaky. Reducing timeout to fail faster when we're going to fail.
   * Catch driver start-up failures.
   * Add explicit API for configuring log prefs rather than forcing users to rely on
@@ -2402,7 +2402,7 @@ WebDriver:
   * fixes issue for locating newly installed chrome versions
   * Fixing IE driver crash when clicking on link that opens a new window.
   * Properly configure the http client in the presence of user credentials.
-  * java json converter chooses Long (Number base class). Fixing RemoteNetworkConnection
+  * java jsonhandler converter chooses Long (Number base class). Fixing RemoteNetworkConnection
   * SUPPORTS_BROWSER_CONNECTION was removed, missed a reference
   * Clean up use deprecated methods & classes.
   * ElementNotVisibleException is a type of InvalidElementStateException.

@@ -230,10 +230,10 @@
   </repositories>
   <properties>
     <version.android.sdk>26</version.android.sdk>
-    <packageVersion.dir>com/fasterxml/jackson/core/json</packageVersion.dir>
+    <packageVersion.dir>com/fasterxml/jackson/core/jsonhandler</packageVersion.dir>
     <osgi.import>!ch.randelshofer.fastdoubleparser, *</osgi.import>
     <version.android.sdk.signature>0.5.1</version.android.sdk.signature>
-    <packageVersion.package>${project.groupId}.json</packageVersion.package>
+    <packageVersion.package>${project.groupId}.jsonhandler</packageVersion.package>
     <osgi.export>com.fasterxml.jackson.core;version=${project.version},
 com.fasterxml.jackson.core.*;version=${project.version}</osgi.export>
     <project.build.outputTimestamp>2024-10-28T23:11:04Z</project.build.outputTimestamp>
