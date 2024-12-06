@@ -1,7 +1,7 @@
 package program;
 
-import twitterCrawler.CrawlOptions;
-import twitterCrawler.CrawlAgent;
+import twittercrawler.CrawlOptions;
+import twittercrawler.CrawlAgent;
 
 import java.io.IOException;
 

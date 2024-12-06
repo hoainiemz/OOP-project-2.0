@@ -1,7 +1,7 @@
 package graph;
 
 import std.StringFunction;
-import twitterCrawler.CrawlOptions;
+import twittercrawler.CrawlOptions;
 
 import java.util.LinkedHashMap;
 

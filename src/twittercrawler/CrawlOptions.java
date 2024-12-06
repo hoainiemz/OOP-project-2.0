@@ -1,4 +1,4 @@
-package twitterCrawler;
+package twittercrawler;
 
 public class CrawlOptions {
     private int kolMinFollower;
