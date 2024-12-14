@@ -83,6 +83,10 @@ public class ActionGraph {
         for (String file : files) {
             loadFromFile(file);
         }
+        // normalize edge list
+        TreeSet<ActionEdge> ts = new TreeSet<>(edgesList);
+        edgesList.clear();
+        edgesList.addAll(ts);
         System.out.println("Graph loaded! :))");
     }
 
