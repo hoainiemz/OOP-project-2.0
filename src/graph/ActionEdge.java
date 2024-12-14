@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import std.Pair;
 import definitions.Constants;
 
-import java.io.Serializable;
-
 public abstract class ActionEdge extends Pair<Node, Node> implements Comparable<ActionEdge> {
     public ActionEdge(Node x, Node y) {
         super(x, y);
