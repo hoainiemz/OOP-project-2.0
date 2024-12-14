@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/lib/jackson/core/jackson-core/2.13.3/jackson-core-2.13.3.pom" />
+        <option value="$PROJECT_DIR$/lib/jackson/core/jackson-core/2.18.1/jackson-core-2.18.1.pom" />
+        <option value="$PROJECT_DIR$/lib/jackson/core/jackson-databind/2.13.3/jackson-databind-2.13.3.pom" />
+        <option value="$PROJECT_DIR$/lib/jackson/core/jackson-databind/2.18.1/jackson-databind-2.18.1.pom" />
+        <option value="$PROJECT_DIR$/lib/jackson/core/jackson-annotations/2.13.3/jackson-annotations-2.13.3.pom" />
+        <option value="$PROJECT_DIR$/lib/jackson/core/jackson-annotations/2.18.1/jackson-annotations-2.18.1.pom" />
+        <option value="$PROJECT_DIR$/lib/jackson/jackson-bom/2.13.3/jackson-bom-2.13.3.pom" />
+        <option value="$PROJECT_DIR$/lib/jackson/jackson-bom/2.18.1/jackson-bom-2.18.1.pom" />
+        <option value="$PROJECT_DIR$/lib/jackson/jackson-base/2.13.3/jackson-base-2.13.3.pom" />
+        <option value="$PROJECT_DIR$/lib/jackson/jackson-base/2.18.1/jackson-base-2.18.1.pom" />
+        <option value="$PROJECT_DIR$/lib/jackson/jackson-parent/2.13/jackson-parent-2.13.pom" />
+        <option value="$PROJECT_DIR$/lib/jackson/jackson-parent/2.18.1/jackson-parent-2.18.1.pom" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="21" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

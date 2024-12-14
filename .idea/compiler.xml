@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="jackson-annotations" />
+        <module name="jackson-databind (1)" />
+        <module name="jackson-core (1)" />
+        <module name="jackson-annotations (1)" />
+        <module name="jackson-core (2)" />
+        <module name="jackson-databind" />
+        <module name="jackson-core" />
+      </profile>
+      <profile name="Annotation profile for jackson-databind" enabled="true">
+        <sourceOutputDir name="../2.13.3/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../2.13.3/target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="jackson-annotations (2)" />
+        <module name="jackson-databind (2)" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="jackson-databind" options="" />
+      <module name="jackson-databind (1)" options="" />
+    </option>
+  </component>
+</project>
