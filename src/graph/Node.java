@@ -1,5 +1,6 @@
 package graph;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import definitions.Constants;
 import std.StringFunction;
 import twittercrawler.CrawlOptions;
@@ -73,6 +74,7 @@ public class Node implements Comparable<Node> {
         return new Node(name, xpath);
     }
 
+    @JsonIgnore
     public String getJSONFilename() {
         return Constants.CRAWLED_DATA_PREFIX_PATH + this.getUser() + ".json";
     }

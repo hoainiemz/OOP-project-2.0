@@ -1,0 +1,62 @@
+[
+  {
+    "key" : {
+      "user" : "Cardano_CF",
+      "xpath" : "1859573066654941579#m"
+    },
+    "value" : {
+      "user" : "Cardano_CF",
+      "xpath" : ""
+    }
+  },
+  {
+    "key" : {
+      "user" : "CryptoEnAfrique",
+      "xpath" : ""
+    },
+    "value" : {
+      "user" : "Cardano_CF",
+      "xpath" : "1859573066654941579#m"
+    }
+  },
+  {
+    "key" : {
+      "user" : "PoolShamrock",
+      "xpath" : ""
+    },
+    "value" : {
+      "user" : "Cardano_CF",
+      "xpath" : "1859573066654941579#m"
+    }
+  },
+  {
+    "key" : {
+      "user" : "Cardano_CF",
+      "xpath" : "1867493099166986674#m"
+    },
+    "value" : {
+      "user" : "Cardano_CF",
+      "xpath" : ""
+    }
+  },
+  {
+    "key" : {
+      "user" : "Freistyle_Bali",
+      "xpath" : ""
+    },
+    "value" : {
+      "user" : "Cardano_CF",
+      "xpath" : "1867493099166986674#m"
+    }
+  },
+  {
+    "key" : {
+      "user" : "ATADA_Stakepool",
+      "xpath" : ""
+    },
+    "value" : {
+      "user" : "Cardano_CF",
+      "xpath" : "1867493099166986674#m"
+    }
+  }
+]
