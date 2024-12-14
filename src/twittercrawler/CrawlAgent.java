@@ -143,7 +143,7 @@ public class CrawlAgent {
         return true;
     }
 
-    public void crawlKeyword(String keyword, ArrayList<String> list) throws InterruptedException, IOException {
+    public void crawlKeyword(String keyword, TreeSet<String> list) throws InterruptedException, IOException {
         String url = "https://nitter.poast.org/search?f=users&q=%23" + keyword;
         visit(url);
         int cnt = 0;
@@ -177,7 +177,7 @@ public class CrawlAgent {
 
     public void search() throws IOException, InterruptedException {
         ArrayList<String> keyWords = JsonHandler.loadArrayFromJSON(Constants.SEARCHING_KEYWORDS_PATH);
-        ArrayList<String> handleList = new ArrayList<>();
+        TreeSet<String> handleList = new TreeSet<>(new std.StringComparator());
         for (String keyWord : keyWords) {
             crawlKeyword(keyWord, handleList);
         }
@@ -257,10 +257,10 @@ public class CrawlAgent {
     }
 
     public void updateFollowingEdges() throws IOException, InterruptedException {
-        ArrayList<String> handles = JsonHandler.loadArrayFromJSON("usernames.json");
-        loadCookies("cookies.json");
+        ArrayList<String> handles = JsonHandler.loadArrayFromJSON(Constants.USERNAME_PATH);
+        loadCookies(Constants.COOKIES_PATH);
         TreeSet<String> skipped = new TreeSet<>(new StringComparator());
-        skipped.addAll(JsonHandler.loadArrayFromJSON("skipped.json"));
+        skipped.addAll(JsonHandler.loadArrayFromJSON(Constants.SKIPPED_PATH));
         for (String handle : handles) {
             String filepath = std.StringFunction.getJSONFilePath(handle);
             if (!JsonHandler.exists(filepath) || skipped.contains(handle)) {
@@ -278,7 +278,7 @@ public class CrawlAgent {
             }
             skipped.add(handle);
             graph.save(new Node(handle));
-            JsonHandler.dumpToJSON(new ArrayList<>(skipped), "skipped.json");
+            JsonHandler.dumpToJSON(new ArrayList<>(skipped), Constants.SKIPPED_PATH);
         }
     }
 }

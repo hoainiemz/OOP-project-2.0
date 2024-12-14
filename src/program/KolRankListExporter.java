@@ -31,17 +31,10 @@ class KolRankListTableRow implements Comparable<KolRankListTableRow> {
 }
 
 public class KolRankListExporter {
-    static void insertNode(TreeMap<Node, Integer> tr, Node node) {
-        if(tr.containsKey(node)) {
-            return;
-        }
-        tr.put(node, tr.size() + 1);
-    }
-
     static TreeSet<Node> loadKol() throws IOException {
         Stream<Path> stream;
         try {
-            stream = Files.list(Paths.get("data/crawled"));
+            stream = Files.list(Paths.get(Constants.CRAWLED_DATA_PREFIX_PATH));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -73,18 +66,20 @@ public class KolRankListExporter {
 
     public static void main(String[] args) throws IOException {
         ActionGraph graph = new ActionGraph();
-        try {
-            graph.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        graph.load();
         ArrayList<ActionEdge> edges = graph.getEdgesList();
         TreeMap<Node, Integer> id = new TreeMap<>();
-        for(ActionEdge e : edges) {
-            insertNode(id, e.getKey());
-            insertNode(id, e.getValue());
+
+        TreeSet<Node> kolList = loadKol();
+        Set<Node> nodeList = graph.getNodeList();
+        nodeList.addAll(kolList);
+
+        Integer n = Integer.valueOf(1);
+        for(Node nd : nodeList) {
+            n = Integer.valueOf(n + 1);
+            id.put(nd, n);
         }
-        int n = id.size(); // number of vertices
+
         ArrayList<DirectedEdge>[] adj = new ArrayList[n + 1];
         for(int i = 1; i <= n; ++i) {
             adj[i] = new ArrayList<>();
@@ -96,7 +91,6 @@ public class KolRankListExporter {
         }
 
         double[] biases = new double[n + 1];
-        TreeSet<Node> kolList = loadKol();
         for(Map.Entry<Node, Integer> it : id.entrySet()) {
             Node nd = it.getKey();
             int u = it.getValue();
@@ -111,7 +105,6 @@ public class KolRankListExporter {
         double[] points = WeightedPagerankRunner.pagerank(Constants.PAGERANK_EPOCHES, n, adj, Constants.PAGERANK_C, biases);
         ArrayList<KolRankListTableRow> table = new ArrayList<>();
         for(Node nd : kolList) {
-            assert(id.containsKey(nd));
             int index = id.get(nd);
             table.add(new KolRankListTableRow(nd.getUser(), points[index]));
         }

@@ -1,5 +1,6 @@
 package graph;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import std.Pair;
 import definitions.Constants;
 
@@ -7,7 +8,11 @@ public abstract class ActionEdge extends Pair<Node, Node> {
     public ActionEdge(Node x, Node y) {
         super(x, y);
     }
+
+    @JsonIgnore
     public abstract double getWeight();
+
+    @JsonIgnore
     public abstract String getType();
 }
 class FollowEdge extends ActionEdge {

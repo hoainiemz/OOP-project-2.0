@@ -20,6 +20,7 @@ public class Constants {
     final static public String USERNAME_PATH = "data/usernames.json";
     final static public String SEARCHING_KEYWORDS_PATH = "data/searchingkeywords.json";
     final static public String SKIPPED_PATH = "data/skipped.json";
+    final static public String COOKIES_PATH = "data/cookies.json";
 
     final static public String CRAWLED_DATA_PREFIX_PATH = "data/crawled/";
 }

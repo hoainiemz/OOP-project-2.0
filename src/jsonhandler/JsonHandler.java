@@ -8,6 +8,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
+
+import static com.fasterxml.jackson.databind.SerializationFeature.FLUSH_AFTER_WRITE_VALUE;
 
 public class JsonHandler {
     private static String directory = "./";
@@ -40,11 +43,18 @@ public class JsonHandler {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        objectMapper.configure(FLUSH_AFTER_WRITE_VALUE, false);
 
         DefaultPrettyPrinter prettyPrinter = new DefaultPrettyPrinter();
         prettyPrinter.indentArraysWith(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE);
 
         objectMapper.writer(prettyPrinter).writeValue(new File(directory + file), lst);
+
+//        System.out.println("JSON file " + file + " created!");
+    }
+
+    public static <T> void dumpToJSON(Set<T> lst, String file) throws IOException {
+        dumpToJSON(new ArrayList<>(lst), directory + file);
 
 //        System.out.println("JSON file " + file + " created!");
     }
