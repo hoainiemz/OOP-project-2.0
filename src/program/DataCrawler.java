@@ -1,6 +1,7 @@
 package program;
 
 import definitions.Constants;
+import graph.ActionGraph;
 import jsonhandler.JsonHandler;
 import twittercrawler.CrawlOptions;
 import twittercrawler.CrawlAgent;
@@ -32,6 +33,9 @@ public class DataCrawler {
     public static void main(String[] args) throws InterruptedException, IOException {
 //        search();
 //        crawl();
-        updateFollowingEdges();
+//        updateFollowingEdges();
+//        ActionGraph graph = new ActionGraph();
+//        graph.load();
+//        System.out.println(graph.getEdgesList().size());
     }
 }
