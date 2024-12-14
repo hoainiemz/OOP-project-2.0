@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -212,10 +213,34 @@ public class CrawlAgent {
         driver.navigate().refresh();
     }
 
-    private void autoCrawlFollowers(TreeSet<String> response) {
-        try {
-            findElement("#react-root > div > div > div.css-175oi2r.r-1f2l425.r-13qz1uu.r-417010.r-18u37iz > main > div > div > div > div > div > section > div > div > .css-175oi2r");
-        } catch (Exception e) {
+    private boolean handleRetry(String selector) throws InterruptedException {
+        while (true) {
+            try {
+                findElement(selector);
+                break;
+            }
+            catch (Exception e) {
+                try {
+                    WebElement retry = findElement(options.getFollowerRetrySelector());
+                    TimeUnit.MINUTES.sleep(2);
+                    retry.click();
+                    continue;
+                } catch (Exception e2) {
+                    try {
+                        WebElement home = findElement(options.getXHomeButton());
+                        return false;
+                    } catch (Exception e3) {
+                        TimeUnit.MINUTES.sleep(2);
+                        driver.navigate().refresh();
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    
+    private void autoCrawlFollowers(TreeSet<String> response) throws InterruptedException {
+        if (!handleRetry("#react-root > div > div > div.css-175oi2r.r-1f2l425.r-13qz1uu.r-417010.r-18u37iz > main > div > div > div > div > div > section > div > div > .css-175oi2r")) {
             return;
         }
         while (true) {

@@ -83,6 +83,7 @@ public class ActionGraph {
         for (String file : files) {
             loadFromFile(file);
         }
+//        TreeSet<Pair<Node, Node> > edgeSet = new TreeSet<>();
         System.out.println("Graph loaded! :))");
     }
 

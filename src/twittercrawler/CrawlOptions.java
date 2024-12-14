@@ -11,12 +11,19 @@ public class CrawlOptions {
     private static final String TIMELINE_ITEM_SELECTOR = "body > div.container > div > div.timeline-container > div > div.timeline-item:not(.show-more)";
     private static final String SEARCH_SHOW_MORE_SELECTOR = "body > div.container > div > div.timeline > div.show-more:not(.timeline-item)";
     private static final String SEARCH_TIMELINE_ITEM_SELECTOR = "body > div > div > div.timeline > div:not(.show-more)";
+    private static final String FOLLOWER_RETRY_SELECTOR = "#react-root > div > div > div.css-175oi2r.r-1f2l425.r-13qz1uu.r-417010.r-18u37iz > main > div > div > div > div > div > div.css-175oi2r.r-1awozwy.r-16y2uox.r-1777fci.r-dd0y9b.r-3o4zer.r-f8sm7e.r-13qz1uu.r-1ye8kvj > button";
+    private static final String X_HOME_BUTTON = "#react-root > div > div > div.css-175oi2r.r-1f2l425.r-13qz1uu.r-417010.r-18u37iz > header > div > div > div > div:nth-child(1) > div.css-175oi2r.r-dnmrzs.r-1559e4e > h1";
     private String href = null;
+
+    public String getXHomeButton() {return X_HOME_BUTTON;}
+
     public String getSearchShowMoreSelector() {return SEARCH_SHOW_MORE_SELECTOR;}
 
     public String getCrawlShowMoreSelector() {
         return CRAWL_SHOW_MORE_SELECTOR;
     }
+
+    public String getFollowerRetrySelector() {return FOLLOWER_RETRY_SELECTOR;}
 
     private void init() {
         kolMinFollower = 100000;
