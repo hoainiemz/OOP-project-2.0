@@ -1,5 +1,6 @@
 package graph;
 
+import definitions.Constants;
 import std.StringFunction;
 import twittercrawler.CrawlOptions;
 
@@ -73,7 +74,7 @@ public class Node implements Comparable<Node> {
     }
 
     public String getJSONFilename() {
-        return "crawled/" + this.getUser() + ".json";
+        return Constants.CRAWLED_DATA_PREFIX_PATH + this.getUser() + ".json";
     }
 
     @Override

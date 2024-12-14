@@ -1,5 +1,6 @@
 package twittercrawler;
 
+import definitions.Constants;
 import graph.*;
 import jsonhandler.JsonHandler;
 import std.StringFunction;
@@ -30,7 +31,7 @@ public class CrawlAgent {
         this.options = options;
         ChromeOptions driverOptions = new ChromeOptions();
         driverOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-        System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
+        System.setProperty("webdriver.chrome.driver", Constants.CHROMEDRIVER_PATH);
         this.driver = new ChromeDriver(driverOptions);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         visit(options.getUrl());
@@ -38,7 +39,6 @@ public class CrawlAgent {
     }
 
     public void visit(String url) throws InterruptedException {
-        int i = 0;
         if (!url.startsWith("https://")) {
             url = "https://" + url;
         }
@@ -47,7 +47,7 @@ public class CrawlAgent {
                 this.driver.navigate().to(url);
                 break;
             }
-            catch(Exception InterruptedException) {
+            catch(Exception e) {
                 continue;
             }
         }
@@ -58,10 +58,10 @@ public class CrawlAgent {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(selector)));
     }
 
-    public void crawlTweet(Node tweet, ActionGraph graph) throws InterruptedException, IOException {
+    public void crawlTweet(Node tweet, ActionGraph graph) throws InterruptedException {
         visit(tweet.getUrl(options));
-        while (true) {
-            int cnt = 0;
+        int cnt = 0;
+        while(true) {
             List<WebElement> replies = driver.findElements(By.cssSelector("#r > .reply.thread.thread-line"));
             for (WebElement reply : replies) {
                 String handle;
@@ -144,7 +144,7 @@ public class CrawlAgent {
     }
 
     public void crawlKeyword(String keyword, ArrayList<String> list) throws InterruptedException, IOException {
-        String url = "https://nitter.poast.org/search?f=users&q=" + keyword;
+        String url = "https://nitter.poast.org/search?f=users&q=%23" + keyword;
         visit(url);
         int cnt = 0;
         while (true) {
@@ -170,33 +170,33 @@ public class CrawlAgent {
                     break;
                 }
             }
-            JsonHandler.dumpToJSON(list, "usernames.json");
+            JsonHandler.dumpToJSON(list, Constants.USERNAME_PATH);
             showMore.click();
         }
     }
 
     public void search() throws IOException, InterruptedException {
-        ArrayList<String> keyWords = JsonHandler.loadArrayFromJSON("searchingkeywords.json");
+        ArrayList<String> keyWords = JsonHandler.loadArrayFromJSON(Constants.SEARCHING_KEYWORDS_PATH);
         ArrayList<String> handleList = new ArrayList<>();
         for (String keyWord : keyWords) {
-           crawlKeyword(keyWord, handleList);
+            crawlKeyword(keyWord, handleList);
         }
-        JsonHandler.dumpToJSON(handleList, "usernames.json");
+        JsonHandler.dumpToJSON(handleList, Constants.USERNAME_PATH);
     }
 
     public void crawl() throws IOException, InterruptedException {
-        ArrayList<String> handles = JsonHandler.loadArrayFromJSON("usernames.json");
+        ArrayList<String> handles = JsonHandler.loadArrayFromJSON(Constants.USERNAME_PATH);
         TreeSet<String> skipped = new TreeSet<>(new StringComparator());
-        skipped.addAll(JsonHandler.loadArrayFromJSON("skipped.json"));
+        skipped.addAll(JsonHandler.loadArrayFromJSON(Constants.SKIPPED_PATH));
         for (String handle : handles) {
             if (skipped.contains(handle)) {
                 continue;
             }
             crawlUser(new Node(handle));
             skipped.add(handle);
-            JsonHandler.dumpToJSON(new ArrayList<>(skipped), "skipped.json");
+            JsonHandler.dumpToJSON(new ArrayList<>(skipped), Constants.SKIPPED_PATH);
         }
-        JsonHandler.dumpToJSON(new ArrayList<>(skipped), "skipped.json");
+        JsonHandler.dumpToJSON(new ArrayList<>(skipped), Constants.SKIPPED_PATH);
         System.out.println("Done! :)");
     }
 

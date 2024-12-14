@@ -25,6 +25,7 @@ public class DataCrawler {
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {
-
+//        search();
+        crawl();
     }
 }

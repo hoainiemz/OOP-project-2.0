@@ -87,7 +87,8 @@ public class ActionGraph {
     }
 
     public void save(Node user) throws IOException {
-        JsonHandler.dumpToJSON(edgesList, user.getJSONFilename());
+        ArrayList<Pair<Node, Node>> edgesListPairNodeFormat = new ArrayList<>(edgesList);
+        JsonHandler.dumpToJSON(edgesListPairNodeFormat, user.getJSONFilename());
     }
 
     public Set<Node> getNodeList() {
