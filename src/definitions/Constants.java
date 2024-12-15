@@ -4,7 +4,7 @@ public class Constants {
     final static public int PAGERANK_EPOCHES = 5000;
     final static public double PAGERANK_C = 0.8;
 
-    final static public double FOLLOW_EDGE_WEIGHT = 0.6;
+    final static public double FOLLOW_EDGE_WEIGHT = 0.3;
     final static public double COMMENT_EDGE_WEIGHT = 0.3;
     final static public double TWEET_EDGE_WEIGHT = 5;
     final static public double REPOST_EDGE_WEIGHT = 1;

@@ -84,9 +84,9 @@ public class ActionGraph {
             loadFromFile(file);
         }
         // normalize edge list
-        TreeSet<ActionEdge> ts = new TreeSet<>(edgesList);
-        edgesList.clear();
-        edgesList.addAll(ts);
+//        TreeSet<ActionEdge> ts = new TreeSet<>(edgesList);
+//        edgesList.clear();
+//        edgesList.addAll(ts);
         System.out.println("Graph loaded! :))");
     }
 
