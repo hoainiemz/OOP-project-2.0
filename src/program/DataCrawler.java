@@ -36,12 +36,12 @@ public class DataCrawler {
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {
-//        search();
+        search();
 //        crawl();
 //        updateFollowingEdges();
-        ActionGraph graph = new ActionGraph();
-        graph.load();
-        System.out.println(graph.getEdgesList().size());
-        System.out.println(graph.getNodeList().size());
+//        ActionGraph graph = new ActionGraph();
+//        graph.load();
+//        System.out.println(graph.getEdgesList().size());
+//        System.out.println(graph.getNodeList().size());
     }
 }

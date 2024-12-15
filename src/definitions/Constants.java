@@ -24,5 +24,5 @@ public class Constants {
 
     final static public String CRAWLED_DATA_PREFIX_PATH = "data/crawled/";
 
-    final static public String NITTER_URL = "https://xcancel.com/";
+    final static public String NITTER_URL = "https://nitter.poast.org/";
 }

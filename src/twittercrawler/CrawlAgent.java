@@ -145,7 +145,7 @@ public class CrawlAgent {
     }
 
     public void crawlKeyword(String keyword, TreeSet<String> list) throws InterruptedException, IOException {
-        String url = "https://nitter.poast.org/search?f=users&q=%23" + keyword;
+        String url = Constants.NITTER_URL + "search?f=users&q=%23" + keyword;
         visit(url);
         int cnt = 0;
         while (true) {
