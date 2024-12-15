@@ -27,8 +27,8 @@ public class CrawlOptions {
 
     private void init() {
         kolMinFollower = 100000;
-        maxTweetsPerKol = 2;
-        maxRepliesPerTweet = 2;
+        maxTweetsPerKol = 2; // tham so cho viec dao data
+        maxRepliesPerTweet = 2; // tam thoi em se de it de quay video
         maxUserPerKeyword = 2;
     }
 

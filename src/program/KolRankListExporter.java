@@ -7,7 +7,7 @@ import graph.ActionGraph;
 import graph.Node;
 
 import pagerank.DirectedEdge;
-import pagerank.WeightedPagerankRunner;
+import pagerank.WeightedPageRankRunner;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -30,7 +30,7 @@ class KolRankListTableRow implements Comparable<KolRankListTableRow> {
     }
 }
 
-public class KolRankListExporter {
+class kolLoader {
     static TreeSet<Node> loadKol() throws IOException {
         Stream<Path> stream;
         try {
@@ -47,7 +47,13 @@ public class KolRankListExporter {
         }
         return kol;
     }
+}
 
+// day chinh la chuong trinh de tao do thi
+// va tạo bang xep hang
+// ket qua cuoi cung se duoc luu vao file result.csv
+// ket qua duoc luu duoi dinh dang .csv
+public class KolRankListExporter {
     static void printTable(String fp, ArrayList<KolRankListTableRow> table) throws FileNotFoundException {
         PrintStream outstream = null;
         try {
@@ -70,7 +76,7 @@ public class KolRankListExporter {
         ArrayList<ActionEdge> edges = graph.getEdgesList();
         TreeMap<Node, Integer> id = new TreeMap<>();
 
-        TreeSet<Node> kolList = loadKol();
+        TreeSet<Node> kolList = kolLoader.loadKol();
         Set<Node> nodeList = graph.getNodeList();
         nodeList.addAll(kolList);
 
@@ -102,7 +108,7 @@ public class KolRankListExporter {
             }
         }
 
-        double[] points = WeightedPagerankRunner.pagerank(Constants.PAGERANK_EPOCHES, n, adj, Constants.PAGERANK_C, biases);
+        double[] points = WeightedPageRankRunner.pageRank(Constants.PAGERANK_EPOCHES, n, adj, Constants.PAGERANK_C, biases);
         ArrayList<KolRankListTableRow> table = new ArrayList<>();
         for(Node nd : kolList) {
             int index = id.get(nd);
