@@ -1,3 +1,8 @@
+/*
+*
+ */
+
+
 package program;
 
 import definitions.Constants;
@@ -34,8 +39,9 @@ public class DataCrawler {
 //        search();
 //        crawl();
 //        updateFollowingEdges();
-//        ActionGraph graph = new ActionGraph();
-//        graph.load();
-//        System.out.println(graph.getEdgesList().size());
+        ActionGraph graph = new ActionGraph();
+        graph.load();
+        System.out.println(graph.getEdgesList().size());
+        System.out.println(graph.getNodeList().size());
     }
 }

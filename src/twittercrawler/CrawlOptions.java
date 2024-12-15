@@ -1,5 +1,7 @@
 package twittercrawler;
 
+import definitions.Constants;
+
 public class CrawlOptions {
     private int kolMinFollower;
     private int maxTweetsPerKol;
@@ -34,7 +36,7 @@ public class CrawlOptions {
 
     public CrawlOptions() {
         init();
-        setUrl("https://nitter.poast.org/");
+        setUrl(Constants.NITTER_URL);
     }
 
     public CrawlOptions(String url) {
