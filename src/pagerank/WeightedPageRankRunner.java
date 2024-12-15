@@ -3,9 +3,9 @@ package pagerank;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class WeightedPagerankRunner {
+public class WeightedPageRankRunner {
 
-    private static void formalize_bias(double [] biased) // formalize the biased so that the total is 1
+    private static void formalizeBias(double [] biased) // formalize the biased so that the total is 1
     {
         double sum = 0;
         for (double num : biased)
@@ -18,7 +18,7 @@ public class WeightedPagerankRunner {
         }
     }
 
-    public static double[] pagerank(int epoch_number, int n, ArrayList<DirectedEdge>[] adj, double c, double [] biased)
+    public static double[] pageRank(int epoch_number, int n, ArrayList<DirectedEdge>[] adj, double c, double [] biased)
     {
         //epoch_number: number of times running the algorithm
         //n:  number of nodes
@@ -28,7 +28,7 @@ public class WeightedPagerankRunner {
 
 
         //formula: p_new = c B p_old + (1 - c) biased
-        formalize_bias(biased); // make sure sum of biased is 1
+        formalizeBias(biased); // make sure sum of biased is 1
 
         double[] resPoint = new double[n + 1]; // the answer - the point for each node
         double[] tempPoint = new double[n + 1]; // temp array when calculate - optimize
@@ -61,6 +61,8 @@ public class WeightedPagerankRunner {
                 }
             }
             System.arraycopy(tempPoint, 0, resPoint, 0, n + 1);
+            System.out.printf("Pagerank: %d/%d\n", epoch, epoch_number);
+            System.out.flush();
         }
         return resPoint;
     }
