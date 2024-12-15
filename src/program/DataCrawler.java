@@ -1,8 +1,3 @@
-/*
-*
- */
-
-
 package program;
 
 import definitions.Constants;
