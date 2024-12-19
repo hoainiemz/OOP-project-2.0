@@ -6,6 +6,9 @@ import graph.ActionEdge;
 import graph.ActionGraph;
 import graph.Node;
 
+import javafx.beans.Observable;
+import javafx.beans.property.*;
+import javafx.beans.value.ObservableValue;
 import pagerank.DirectedEdge;
 import pagerank.WeightedPageRankRunner;
 
@@ -17,13 +20,66 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javafx.scene.layout.BorderPane;
+import javafx.scene.control.TableView;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+
 class KolRankListTableRow implements Comparable<KolRankListTableRow> {
-    String handle;
-    double point;
-    public KolRankListTableRow(String handle, double point) {
+    public int rank;
+    public String handle;
+    public double point;
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
+    public String getHandle() {
+        return handle;
+    }
+
+    public void setHandle(String handle) {
         this.handle = handle;
+    }
+
+    public double getPoint() {
+        return point;
+    }
+
+    public void setPoint(double point) {
         this.point = point;
     }
+
+    public KolRankListTableRow() {
+        setRank(-1);
+        setHandle("");
+        setPoint(0);
+    }
+    public KolRankListTableRow(int rank, String handle, double point) {
+        setRank(rank);
+        setHandle(handle);
+        setPoint(point);
+    }
+
+    public StringProperty rankProperty() {
+        return new SimpleStringProperty(Integer.valueOf(getRank()).toString());
+    }
+
+    public StringProperty handleProperty() {
+        return new SimpleStringProperty(getHandle());
+    }
+
+    public StringProperty pointProperty() {
+        return new SimpleStringProperty(String.format("%5f", getPoint()));
+    }
+
     @Override
     public int compareTo(KolRankListTableRow o) {
         return point < o.point ? 1 : (point > o.point ? -1 : 0);
@@ -49,28 +105,40 @@ class kolLoader {
     }
 }
 
-// day chinh la chuong trinh de tao do thi
-// va tạo bang xep hang
-// ket qua cuoi cung se duoc luu vao file result.csv
-// ket qua duoc luu duoi dinh dang .csv
-public class KolRankListExporter {
-    static void printTable(String fp, ArrayList<KolRankListTableRow> table) throws FileNotFoundException {
-        PrintStream outstream = null;
-        try {
-            outstream = new PrintStream(new FileOutputStream(fp));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+public class KolRankListExporter extends Application {
+    static void viewTable(Stage primaryStage, ArrayList<KolRankListTableRow> tableRowList) {
+        BorderPane root = new BorderPane();
+        TableView table = new TableView<KolRankListTableRow>();
+
+        TableColumn<KolRankListTableRow, String> firstColumn = new TableColumn<KolRankListTableRow, String> ("Rank");
+        firstColumn.setCellValueFactory(p -> p.getValue().rankProperty());
+
+        TableColumn<KolRankListTableRow, String> secondColumn = new TableColumn<KolRankListTableRow, String> ("Handle");
+        secondColumn.setCellValueFactory(p -> p.getValue().handleProperty());
+
+        TableColumn<KolRankListTableRow, String> thirdColumn = new TableColumn<KolRankListTableRow, String> ("Point");
+        thirdColumn.setCellValueFactory(p -> p.getValue().pointProperty());
+
+        table.getColumns().add(firstColumn);
+        table.getColumns().add(secondColumn);
+        table.getColumns().add(thirdColumn);
+
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        for(KolRankListTableRow t : tableRowList) {
+            table.getItems().add(t);
         }
-        PrintWriter out = new PrintWriter(outstream);
-        out.println("rank,handle,point");
-        Integer count = 0;
-        for(KolRankListTableRow t : table) {
-            out.printf("%d,%s,%f\n", ++count, t.handle, t.point);
-        }
-        out.flush();
+
+        root.setCenter(table);
+
+        Scene scene = new Scene(root, 500, 300);
+        scene.getStylesheets().add("stylesheet.css");
+        primaryStage.setTitle("KOL ranklist");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
-    public static void main(String[] args) throws IOException {
+    @Override public void start(Stage stage) throws IOException {
         ActionGraph graph = new ActionGraph();
         graph.load();
         ArrayList<ActionEdge> edges = graph.getEdgesList();
@@ -112,9 +180,18 @@ public class KolRankListExporter {
         ArrayList<KolRankListTableRow> table = new ArrayList<>();
         for(Node nd : kolList) {
             int index = id.get(nd);
-            table.add(new KolRankListTableRow(nd.getUser(), points[index]));
+            table.add(new KolRankListTableRow(-1, nd.getUser(), points[index]));
         }
         table.sort(KolRankListTableRow::compareTo);
-        printTable(Constants.KOL_RANK_LIST_OUTPUT_FILE_PATH, table);
+        int cnt = 0;
+        for(KolRankListTableRow t : table) {
+            ++cnt;
+            t.setRank(cnt);
+        }
+        viewTable(stage, table);
+    }
+
+    public static void main(String[] args) {
+        Application.launch(args);
     }
 }
