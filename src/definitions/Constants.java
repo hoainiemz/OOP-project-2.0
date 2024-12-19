@@ -13,8 +13,6 @@ public class Constants {
     final static public double NORMIE_BIAS = 0.1;
     final static public double TWEET_BIAS = 0.2;
 
-    final static public String KOL_RANK_LIST_OUTPUT_FILE_PATH = "result.csv";
-
     final static public String CHROMEDRIVER_PATH = "/usr/lib/chromium-browser/chromedriver";
 
     final static public String USERNAME_PATH = "data/usernames.json";
